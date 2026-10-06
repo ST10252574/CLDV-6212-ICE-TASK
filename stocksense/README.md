@@ -2,6 +2,19 @@
 
 **Simple stock tracking and reorder alerts for small independent retailers.**
 
+[![CI/CD](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml)
+[![CodeQL](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml)
+
+| | |
+|---|---|
+| **Live app** | https://YOUR-WEB-SERVICE.onrender.com |
+| **API docs (Swagger)** | https://YOUR-API-SERVICE.onrender.com/swagger |
+| **Demo login** | `demo@stocksense.app` / `Demo1234!` |
+
+> The app is hosted on free tiers. If nobody has used it for a while the services sleep, so the first request can take up to about a minute. Open it a minute before you need it.
+
+---
+
 ## 1. The problem
 
 ### Who it affects
@@ -239,7 +252,7 @@ No payment details were required for any of these. Free-tier behaviour to be awa
 
 | Member | GitHub | Contributions |
 |---|---|---|
-| Sabein Naidoo | [@ST10252574](https://github.com/ST10252574) | Sole author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
+| YOUR NAME | [@YOUR-USERNAME](https://github.com/YOUR-USERNAME) | Sole author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
 
 ---
 

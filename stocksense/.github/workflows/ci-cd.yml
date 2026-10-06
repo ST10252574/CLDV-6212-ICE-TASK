@@ -1,0 +1,165 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------- Build & test
+  backend:
+    name: Backend build & test (.NET)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore backend/StockSense.sln
+
+      - name: Build
+        run: dotnet build backend/StockSense.sln --configuration Release --no-restore
+
+      - name: Unit tests
+        run: dotnet test backend/StockSense.sln --configuration Release --no-build --verbosity normal
+
+      - name: Check for vulnerable NuGet packages
+        run: |
+          dotnet list backend/StockSense.sln package --vulnerable --include-transitive 2>&1 | tee vuln.txt
+          if grep -q "has the following vulnerable packages" vuln.txt; then
+            echo "::error::Vulnerable NuGet packages found"; exit 1
+          fi
+
+  frontend:
+    name: Frontend build & test (React)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+      - name: Unit tests
+        run: npm test
+      - name: Type-check and build
+        run: npm run build
+
+      - name: npm audit (high severity and above)
+        run: npm audit --audit-level=high
+
+  # ---------------------------------------------------------------- Docker build
+  docker:
+    name: Docker build (compose)
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create .env from the example file
+        run: cp .env.example .env
+
+      - name: Build both images with docker compose
+        run: docker compose build
+
+      - name: Smoke test - stack starts and the API is healthy
+        run: |
+          docker compose up -d
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8080/health; then echo; echo "API healthy"; break; fi
+            echo "waiting for API ($i/30)..."; sleep 4
+          done
+          curl -fsS http://localhost:8080/health
+          curl -fsS http://localhost:3000/ > /dev/null
+          # the proxy path the browser uses: web (nginx) -> api
+          curl -fsS http://localhost:3000/api/auth/login -H 'Content-Type: application/json' \
+            -d '{"email":"demo@stocksense.app","password":"Demo1234!"}' > /dev/null
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
+
+  # ---------------------------------------------------------------- Security
+  trivy:
+    name: Security - Trivy
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan source, dependencies and config (filesystem)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Build images for scanning
+        run: |
+          docker build -t stocksense-api:ci backend
+          docker build -t stocksense-web:ci frontend
+
+      - name: Scan API image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: stocksense-api:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Scan web image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: stocksense-web:ci
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+
+  # ---------------------------------------------------------------- Deploy
+  # Runs only after everything above passed, and only for pushes to main (i.e. merged PRs).
+  # Render builds each service from its Dockerfile when its deploy hook is called.
+  # The hook URLs are secrets: GitHub repo -> Settings -> Secrets and variables -> Actions.
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    needs: [backend, frontend, docker, trivy]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Deploy API
+        env:
+          HOOK: ${{ secrets.RENDER_API_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "::error::RENDER_API_DEPLOY_HOOK secret is not set"; exit 1; fi
+          curl -fsS -X POST "$HOOK"
+
+      - name: Deploy web
+        env:
+          HOOK: ${{ secrets.RENDER_WEB_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "::error::RENDER_WEB_DEPLOY_HOOK secret is not set"; exit 1; fi
+          curl -fsS -X POST "$HOOK"
