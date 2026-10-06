@@ -1,0 +1,7 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.idea/
+StockSense.Tests/
+Dockerfile
+.dockerignore
