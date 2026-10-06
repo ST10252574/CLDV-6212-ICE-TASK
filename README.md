@@ -2,19 +2,6 @@
 
 **Simple stock tracking and reorder alerts for small independent retailers.**
 
-[![CI/CD](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml)
-[![CodeQL](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml)
-
-| | |
-|---|---|
-| **Live app** | https://YOUR-WEB-SERVICE.onrender.com |
-| **API docs (Swagger)** | https://YOUR-API-SERVICE.onrender.com/swagger |
-| **Demo login** | `demo@stocksense.app` / `Demo1234!` |
-
-> The app is hosted on free tiers. If nobody has used it for a while the services sleep, so the first request can take up to about a minute. Open it a minute before you need it.
-
----
-
 ## 1. The problem
 
 ### Who it affects
