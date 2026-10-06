@@ -239,7 +239,7 @@ No payment details were required for any of these. Free-tier behaviour to be awa
 
 | Member | GitHub | Contributions |
 |---|---|---|
-| YOUR NAME | [@YOUR-USERNAME](https://github.com/YOUR-USERNAME) | Sole author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
+| Sabein Naidoo | [@ST10252574](https://github.com/ST10252574) | Sole author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
 
 ---
 
