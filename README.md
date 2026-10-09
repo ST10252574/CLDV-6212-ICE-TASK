@@ -243,6 +243,10 @@ No payment details were required for any of these. Free-tier behaviour to be awa
 |---|---|---|
 | Ahilya Surujpal | [@ST10285098](https://github.com/ST10285098) | author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
 
+| Member | GitHub | Contributions |
+|---|---|---|
+| Ahilya Surujpal | [@ST10285098](https://github.com/ST10285098) | author: research, ASP.NET Core API, React frontend, Docker and Compose, CI/CD pipeline, deployment, documentation |
+
 ---
 
 ## 12. Limitations and future work
@@ -250,3 +254,7 @@ No payment details were required for any of these. Free-tier behaviour to be awa
 - Database tables are created with `EnsureCreated` for simplicity; a production system should use EF Core migrations.
 - The auth token is kept in `sessionStorage`; a production system should prefer short-lived tokens with httpOnly refresh cookies.
 - No barcode scanning, supplier management or sales-based forecasting yet. These are natural next steps, along with a progressive-web-app mode for offline use on poor connections.
+
+  # AI Disclosure
+
+  - Claude Helper was used to aid with readme layout and problems with code along with comments describing the code in a meaningful way.
