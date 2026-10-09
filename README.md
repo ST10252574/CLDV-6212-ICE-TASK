@@ -121,8 +121,6 @@ docker compose up --build
 | Swagger UI | http://localhost:8080/swagger |
 | Health check | http://localhost:8080/health |
 
-With `SEED_DEMO_DATA=true` (the default in `.env.example`) a demo shop is created on first start. Sign in with `demo@stocksense.app` / `Demo1234!`, or create your own account.
-
 Stop the stack with `Ctrl+C`, and remove containers and the local database volume with `docker compose down -v`.
 
 ### Running without Docker (for development)
