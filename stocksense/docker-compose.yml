@@ -1,8 +1,6 @@
 # Local development stack:  docker compose up --build
 #   Web app  -> http://localhost:3000
 #   API      -> http://localhost:8080   (Swagger UI at /swagger)
-#
-# Configuration comes from a .env file next to this one (copy .env.example to .env).
 # Compose is for LOCAL use. In production the frontend and backend are deployed as two
 # separate containerised services and the database is a hosted free-tier Postgres (Neon).
 
