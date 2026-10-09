@@ -1,11 +1,5 @@
 # StockSense
 
-**Simple stock tracking and reorder alerts for small independent retailers.**
-| | |
-|---|---|
-| **Live app** | https://YOUR-WEB-SERVICE.onrender.com |
-| **API docs (Swagger)** | https://YOUR-API-SERVICE.onrender.com/swagger |
-| **Demo login** | `demo@stocksense.app` / `Demo1234!` |
 
 > The app is hosted on free tiers. If nobody has used it for a while the services sleep, so the first request can take up to about a minute. Open it a minute before you need it.
 
