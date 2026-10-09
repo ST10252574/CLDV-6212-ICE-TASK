@@ -1,10 +1,6 @@
 # StockSense
 
 **Simple stock tracking and reorder alerts for small independent retailers.**
-
-[![CI/CD](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/ci-cd.yml)
-[![CodeQL](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml/badge.svg)](https://github.com/YOUR-USERNAME/stocksense/actions/workflows/codeql.yml)
-
 | | |
 |---|---|
 | **Live app** | https://YOUR-WEB-SERVICE.onrender.com |
